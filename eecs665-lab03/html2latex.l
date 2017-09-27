@@ -31,12 +31,89 @@ int list_type;
   printf("%s", yytext);
 }
 
+"<ul>" {
+  printf("%s", yytext);
+  BEGIN UL;
+}
+
+"<ol>" {
+  printf("%s\n", yytext);
+  BEGIN OL;
+}
+
+<OL>[^<]* {
+  printf("%s\n", yytext);
+}
+
+<OL>"</ol>" {
+  printf("%s\n", yytext);
+  BEGIN 0;
+}
+
+<UL>[^<]* {
+  printf("%s", yytext);
+}
+
+<UL>"<li>" {
+  printf("%s", yytext);
+  BEGIN LI;
+}
+
+<UL>"</ul>" {
+  printf("%s\n", yytext);
+  BEGIN 0;
+}
+<LI>"</li>" {
+  printf("%s\n", yytext);
+  BEGIN UL;
+}
+
+<LI>"<small>"[^<]*"</small>" {
+  printf("%s", yytext);
+}
+
+<LI>"<b>"[^<]*"</b>" {
+  printf("%s", yytext);
+}
+
+<LI>"<i>"[^<]*"</i>" {
+  printf("%s", yytext);
+}
+
+<LI>"<em>"[^<]*"</em>" {
+  printf("%s", yytext);
+}
+
+<LI>"<strong>"[^<]*"</strong>" {
+  printf("%s", yytext);
+}
+
+<LI>"<sup>"[^<]*"</sup>" {
+  printf("%s", yytext);
+}
+
+<LI>"<sub>"[^<]*"</sub>" {
+  printf("%s", yytext);
+}
+
+<LI>"<big>"[^<]*"</big>" {
+  printf("%s", yytext);
+}
+
+<LI>[^<]* {
+  printf("%s", yytext);
+}
+
+
+
+
+
 "<pre>" {
   printf("%s", yytext);
   BEGIN PRE;
 }
 
-<PRE>[a-zA-Z0-9\." "]* {
+<PRE>[^<]* {
   printf("%s", yytext);
 }
 
@@ -51,7 +128,7 @@ int list_type;
   BEGIN PARA;
 }
 
-<PARA>[a-zA-Z0-9\." "]* {
+<PARA>[^<]* {
   printf("%s", yytext);
 }
 
@@ -75,7 +152,7 @@ int list_type;
   BEGIN SUB;
 }
 
-<SUB>[a-zA-Z0-9\." "]* {
+<SUB>[^<]* {
   printf("%s", yytext);
 }
 
@@ -84,7 +161,7 @@ int list_type;
   BEGIN PARA;
 }
 
-<SUP>[a-zA-Z0-9\." "]* {
+<SUP>[^<]* {
   printf("%s", yytext);
 }
 
@@ -98,7 +175,7 @@ int list_type;
   BEGIN STRONG;
 }
 
-<STRONG>[a-zA-Z0-9\." "]* {
+<STRONG>[^<]* {
   printf("%s", yytext);
 }
 
@@ -112,7 +189,7 @@ int list_type;
   BEGIN EMPH;
 }
 
-<EMPH>[a-zA-Z0-9\." "]* {
+<EMPH>[^<]* {
   printf("%s", yytext);
 }
 
@@ -121,7 +198,7 @@ int list_type;
   BEGIN PARA;
 }
 
-<ITAL>[a-zA-Z0-9\." "]* {
+<ITAL>[^<]* {
   printf("%s", yytext);
 }
 
@@ -135,7 +212,7 @@ int list_type;
   BEGIN BOLD;
 }
 
-<BOLD>[a-zA-Z0-9\." "]* {
+<BOLD>[^<]* {
   printf("%s", yytext);
 }
 
@@ -149,7 +226,7 @@ int list_type;
   BEGIN SMALL;
 }
 
-<SMALL>[a-zA-Z0-9\." "]* {
+<SMALL>[^<]* {
   printf("%s", yytext);
 }
 
@@ -163,7 +240,7 @@ int list_type;
   BEGIN BIG;
 }
 
-<BIG>[a-zA-Z0-9\." "]* {
+<BIG>[^<]* {
   printf("%s", yytext);
 }
 
