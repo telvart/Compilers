@@ -110,11 +110,6 @@ int list_type;
   printf("%s\n", yytext);
 }
 
-<OL>"</ol>" {
-  printf("\\end{enumerate}");
-  BEGIN 0;
-}
-
 <UL>[^<]* {
   printf("%s", yytext);
 }
@@ -124,20 +119,21 @@ int list_type;
   BEGIN LI;
 }
 
-<UL>"</ol>" {
-  printf("\\end{enumerate}");
-  BEGIN 0;
-}
-
 <OL>"<li>" {
   printf("\\item");
   BEGIN LI;
+}
+
+<UL>"</ol>" { //workaround for how i set up my LI state rules
+  printf("\\end{enumerate}");
+  BEGIN 0;
 }
 
 <UL>"</ul>" {
   printf("\\end{itemize}");
   BEGIN 0;
 }
+
 <LI>"</li>" {
   BEGIN UL;
 }
