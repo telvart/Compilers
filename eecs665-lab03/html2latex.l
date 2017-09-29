@@ -7,7 +7,7 @@ int list_type;
 %}
 
 %option       noyywrap nounput yylineno
-%x            COMMENT PARA PRE OL UL LI BIG SMALL BOLD ITAL EMPH STRONG SUP SUB
+%x            COMMENT PARA PRE OL UL LI
 
 %%
 
@@ -32,7 +32,6 @@ int list_type;
 }
 
 "<p>" {
-  //printf("%s", yytext);
   BEGIN PARA;
 }
 
@@ -45,121 +44,57 @@ int list_type;
   BEGIN 0;
 }
 
-<PARA>"<sup>" {
-  //printf("%s", yytext);
-  BEGIN SUP;
+<PARA>"<sup>"[^<]*"</sup>" {
+  yytext[yyleng - 6] = 0;
+  printf("\\textsuperscript{%s}", yytext +5);
 }
 
-<PARA>"<sub>" {
-  //printf("%s", yytext);
-  BEGIN SUB;
+<PARA>"<sub>"[^<]*"</sub>" {
+  yytext[yyleng - 6] = 0;
+  printf("\\textsubscript{%s}", yytext+5);
 }
 
-<SUB>[^<]* {
-  printf("\\textsubscript{%s}", yytext);
+<PARA>"<strong>"[^<]*"</strong>" {
+  yytext[yyleng - 9] = 0;
+  printf("\\textmd{%s}", yytext + 8);
 }
 
-<SUB>"</sub>" {
-  //printf("%s", yytext);
-  BEGIN PARA;
+<PARA>"<em>"[^<]*"</em>" {
+  yytext[yyleng - 5] = 0;
+  printf("\\emph{%s}", yytext + 4);
 }
 
-<SUP>[^<]* {
-  printf("\\textsuperscript{%s}", yytext);
+<PARA>"<i>"[^<]*"</i>" {
+  yytext[yyleng - 4] = 0;
+  printf("\\textit{%s}", yytext + 3);
 }
 
-<SUP>"</sup>" {
-//  printf("%s", yytext);
-  BEGIN PARA;
+<PARA>"<b>"[^<]*"</b>" {
+  yytext[yyleng - 4] = 0;
+  printf("\\textbf{%s}", yytext+3);
 }
 
-<PARA>"<strong>" {
-//  printf("%s", yytext);
-  BEGIN STRONG;
+<PARA>"<small>"[^<]*"</small>" {
+  yytext[yyleng - 8] = 0;
+  printf("{\\scriptsize small %s}", yytext + 7);
 }
 
-<STRONG>[^<]* {
-  printf("\\textmd{%s}", yytext);
+<PARA>"<big>"[^<]*"</big>" {
+  yytext[yyleng - 6] = 0;
+  printf("{\\Large %s}", yytext + 5);
 }
 
-<STRONG>"</strong>" {
-//  printf("%s", yytext);
-  BEGIN PARA;
+"<pre>" {
+  BEGIN PRE;
 }
 
-<PARA>"<em>" {
-//  printf("%s", yytext);
-  BEGIN EMPH;
+<PRE>[^<]* {
+  printf("\\begin{verbatim}%s\\end{verbatim}", yytext);
 }
 
-<EMPH>[^<]* {
-  printf("\\emph{%s}", yytext);
+<PRE>"</pre>" {
+  BEGIN 0;
 }
-
-<EMPH>"</em>" {
-//  printf("%s", yytext);
-  BEGIN PARA;
-}
-
-<PARA>"<i>" {
-//  printf("%s", yytext);
-  BEGIN ITAL;
-}
-
-<ITAL>[^<]* {
-  printf("\\textit{%s}", yytext);
-}
-
-<ITAL>"</i>" {
-//  printf("%s", yytext);
-  BEGIN PARA;
-}
-
-<PARA>"<b>" {
-//  printf("%s", yytext);
-  BEGIN BOLD;
-}
-
-<BOLD>[^<]* {
-  printf("\\textbf{%s}", yytext);
-}
-
-<BOLD>"</b>" {
-//  printf("%s", yytext);
-  BEGIN PARA;
-}
-
-<PARA>"<small>" {
-//  printf("%s", yytext);
-  BEGIN SMALL;
-}
-
-<SMALL>[^<]* {
-  printf("{\\scriptsize small %s}", yytext);
-}
-
-<SMALL>"</small>" {
-//  printf("%s", yytext);
-  BEGIN PARA;
-}
-
-<PARA>"<big>" {
-//  printf("%s", yytext);
-  BEGIN BIG;
-}
-
-<BIG>[^<]* {
-  printf("{\\Large %s}", yytext);
-}
-
-
-<BIG>"</big>" {
-//  printf("%s", yytext);
-  BEGIN PARA;
-}
-
-
-
 
 "<ul>" {
   printf("\\begin{itemize}");
@@ -204,7 +139,6 @@ int list_type;
   BEGIN 0;
 }
 <LI>"</li>" {
-//  printf("%s", yytext);
   BEGIN UL;
 }
 
@@ -250,20 +184,6 @@ int list_type;
 
 <LI>[^<]* {
   printf("%s", yytext);
-}
-
-"<pre>" {
-//  printf("%s", yytext);
-  BEGIN PRE;
-}
-
-<PRE>[^<]* {
-  printf("\\begin{verbatim}%s\\end{verbatim}", yytext);
-}
-
-<PRE>"</pre>" {
-//  printf("%s", yytext);
-  BEGIN 0;
 }
 
 
