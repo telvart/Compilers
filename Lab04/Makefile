@@ -2,7 +2,7 @@ LEX=lex
 YACC=yacc
 CC=gcc
 
-LFLAGS=
+LFLAGS=-d
 CFLAGS=-Wall -Wno-unused-label -Wno-unused -g
 
 lexer: lexer.lex.o
