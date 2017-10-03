@@ -1,0 +1,83 @@
+STATIC
+ CHAR
+ MUL
+;ID
+ SET
+ STRVAL
+;
+
+
+PREPROC
+ID
+ LT
+ID
+DBLVAL
+ID
+GT
+
+
+ID
+(
+ID
+,
+ ID
+)
+
+INT
+ ID
+;
+
+
+CHAR
+ MUL
+;ID
+[
+]
+;
+
+ {
+
+    REGISTER
+ INT
+ ID
+,
+ ID
+;
+
+
+
+    ID
+ SET
+ INTVAL
+;
+
+
+    IF
+(
+ID
+ GT
+ INTVAL
+ AND
+ ID
+[
+INTVAL
+]
+[
+INTVAL
+]
+ EQ
+ CHARVAL
+ )
+;
+
+
+
+    ID
+(
+INTVAL
+)
+;
+
+
+}
+

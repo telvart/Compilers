@@ -14,6 +14,7 @@
 #define CLOSESQUARE 328
 #define COMMA 329
 #define SEMICOLON 330
+#define SPACE 331
 
 #define ID 257
 
@@ -94,7 +95,11 @@
 
 ID [a-zA-Z][a-zA-Z0-9_]*
 STRVAL \"(\\.|[^"])*\"
-INTVAL [0-9]*
+CHARVAL \'(\\.|[^"])*\'
+INTVAL [0-9]*|"0x"[0-9]*|"0"[0-9]*
+DBLVAL [0-9]*"."[0-9]*
+FLTVAL [0-9]*"."[0-9]*f
+PREPROC "#"
 
 %%
 "//" {
@@ -195,8 +200,6 @@ INTVAL [0-9]*
   return DEFAULT;
 }
 
-"|" {
-
 "if" {
   printf("IF\n");
   return IF;
@@ -288,7 +291,7 @@ INTVAL [0-9]*
 }
 
 "<=" {
-  printf("LE\n");
+  printf("LE");
   return LE;
 }
 
@@ -303,8 +306,8 @@ INTVAL [0-9]*
 }
 
 "+" {
-  printf("ADD\n");
-  return ADD;
+  printf("MUL\n");
+  return MUL;
 }
 
 "-" {
@@ -313,10 +316,8 @@ INTVAL [0-9]*
 }
 
 "*" {
-  printf("MUL\n");
+  printf("MUL\n;");
   return MUL;
-
-"|" {
 }
 
 "/" {
@@ -429,7 +430,45 @@ INTVAL [0-9]*
   return SETRSH;
 }
 
+"(" {
+  printf("(\n");
+  return OPENPAREN;
+}
 
+")" {
+  printf(")\n");
+  return CLOSEPAREN;
+}
+
+"[" {
+  printf("[\n");
+  return OPENSQUARE;
+}
+
+"]" {
+  printf("]\n");
+  return CLOSESQUARE;
+}
+
+"," {
+  printf(",\n");
+  return COMMA;
+}
+
+";" {
+  printf(";\n\n");
+  return SEMICOLON;
+}
+
+"{" {
+  printf("{\n");
+  return OPENCURLY;
+}
+
+"}" {
+  printf("}\n");
+  return CLOSECURLY;
+}
 
 {ID} {
     /**************************************
@@ -449,6 +488,30 @@ INTVAL [0-9]*
 {STRVAL} {
   printf("STRVAL\n");
   return STRVAL;
+}
+
+{CHARVAL} {
+  printf("CHARVAL\n");
+  return CHARVAL;
+}
+
+{PREPROC} {
+  printf("PREPROC\n");
+  return PREPROC;
+}
+
+{DBLVAL} {
+  printf("DBLVAL\n");
+  return DBLVAL;
+}
+
+{FLTVAL} {
+  printf("FLTVAL\n");
+  return FLTVAL;
+}
+
+[\t]* {
+  return SPACE;
 }
 
 %%

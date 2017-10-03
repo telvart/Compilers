@@ -12,7 +12,7 @@ char *argv[]; {
         argc--;
         argv++;
     }
-    
+
     for(i=1; i<argc; i++) {
         fputs(argv[i], stdout);
         if (i < argc-1)
