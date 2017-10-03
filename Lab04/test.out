@@ -1,15 +1,11 @@
 STATIC
 CHAR
 MUL
-;ID
+ID
 SET
 STRVAL
 ;
 PREPROC
-LT
-ID
-.ID
-GT
 ID
 (
 ID
@@ -21,7 +17,7 @@ ID
 ;
 CHAR
 MUL
-;ID
+ID
 [
 ]
 ;

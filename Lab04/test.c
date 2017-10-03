@@ -18,7 +18,7 @@ char *argv[]; {
         if (i < argc-1)
             putchar( ' ' );
     }
-    
+
     if(nflg == 0)
         putchar( '\n' );
 

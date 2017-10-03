@@ -91,7 +91,7 @@
 %}
 
 %option noyywrap nounput yylineno
-%x COMMENT
+%x COMMENT PREPRO
 
 ID [a-zA-Z][a-zA-Z0-9_]*
 STRVAL \"(\\.|[^"])*\"
@@ -99,7 +99,7 @@ CHARVAL \'(\\.|[^'])*\'
 INTVAL [0-9]+|"0x"[0-9]+|"0"[0-9]+
 DBLVAL [0-9]+"."[0-9]+
 FLTVAL [0-9]+"."[0-9]+f
-PREPROC "#"{ID}
+PREPROC "#"
 
 %%
 "//" {
@@ -134,10 +134,18 @@ PREPROC "#"{ID}
 }
 
 {PREPROC} {
-  printf("PREPROC\n");
-  return PREPROC;
+  BEGIN PREPRO;
 }
 
+<PREPRO>[a-zA-Z0-9_<>\"\. ]+ {
+
+}
+
+<PREPRO>\n {
+  printf("PREPROC\n");
+  BEGIN 0;
+  return PREPROC;
+}
 
 "void" {
   printf("VOID\n");
@@ -325,7 +333,7 @@ PREPROC "#"{ID}
 }
 
 "*" {
-  printf("MUL\n;");
+  printf("MUL\n");
   return MUL;
 }
 
@@ -459,7 +467,7 @@ PREPROC "#"{ID}
   return CLOSESQUARE;
 }
 
-","[" "]+ {
+"," {
   printf(",\n");
   return COMMA;
 }
@@ -504,8 +512,6 @@ PREPROC "#"{ID}
   printf("CHARVAL\n");
   return CHARVAL;
 }
-
-
 
 {DBLVAL} {
   printf("DBLVAL\n");
