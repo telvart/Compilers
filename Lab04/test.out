@@ -1,83 +1,134 @@
 STATIC
- CHAR
- MUL
+CHAR
+MUL
 ;ID
- SET
- STRVAL
+SET
+STRVAL
 ;
-
-
 PREPROC
+LT
 ID
- LT
+.ID
+GT
 ID
-DBLVAL
+(
+ID
+,
+ID
+)
+INT
+ID
+;
+CHAR
+MUL
+;ID
+[
+]
+;
+{
+REGISTER
+INT
+ID
+,
+ID
+;
+ID
+SET
+INTVAL
+;
+IF
+(
 ID
 GT
-
-
+INTVAL
+AND
 ID
-(
+[
+INTVAL
+]
+[
+INTVAL
+]
+EQ
+CHARVAL
+AND
 ID
-,
- ID
+[
+INTVAL
+]
+[
+INTVAL
+]
+EQ
+CHARVAL
 )
-
-INT
- ID
-;
-
-
-CHAR
- MUL
-;ID
-[
-]
-;
-
- {
-
-    REGISTER
- INT
- ID
-,
- ID
-;
-
-
-
-    ID
- SET
- INTVAL
-;
-
-
-    IF
-(
+{
 ID
- GT
- INTVAL
- AND
- ID
-[
-INTVAL
-]
-[
-INTVAL
-]
- EQ
- CHARVAL
- )
+ADD
+ADD
 ;
-
-
-
-    ID
-(
-INTVAL
-)
+ID
+SUB
+SUB
 ;
-
-
+ID
+ADD
+ADD
+;
 }
-
+FOR
+(
+ID
+SET
+INTVAL
+;
+ID
+LT
+ID
+;
+ID
+ADD
+ADD
+)
+{
+ID
+(
+ID
+[
+ID
+]
+,
+ID
+)
+;
+IF
+(
+ID
+LT
+ID
+SUB
+INTVAL
+)
+ID
+(
+CHARVAL
+)
+;
+}
+IF
+(
+ID
+EQ
+INTVAL
+)
+ID
+(
+CHARVAL
+)
+;
+ID
+(
+INTVAL
+)
+;
+}

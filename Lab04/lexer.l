@@ -95,11 +95,11 @@
 
 ID [a-zA-Z][a-zA-Z0-9_]*
 STRVAL \"(\\.|[^"])*\"
-CHARVAL \'(\\.|[^"])*\'
-INTVAL [0-9]*|"0x"[0-9]*|"0"[0-9]*
-DBLVAL [0-9]*"."[0-9]*
-FLTVAL [0-9]*"."[0-9]*f
-PREPROC "#"
+CHARVAL \'(\\.|[^'])*\'
+INTVAL [0-9]+|"0x"[0-9]+|"0"[0-9]+
+DBLVAL [0-9]+"."[0-9]+
+FLTVAL [0-9]+"."[0-9]+f
+PREPROC "#"{ID}
 
 %%
 "//" {
@@ -127,6 +127,15 @@ PREPROC "#"
 }
 
 <COMMENT>. {
+}
+
+[ \t\n\r]+ {
+
+}
+
+{PREPROC} {
+  printf("PREPROC\n");
+  return PREPROC;
 }
 
 
@@ -306,8 +315,8 @@ PREPROC "#"
 }
 
 "+" {
-  printf("MUL\n");
-  return MUL;
+  printf("ADD\n");
+  return ADD;
 }
 
 "-" {
@@ -450,13 +459,13 @@ PREPROC "#"
   return CLOSESQUARE;
 }
 
-"," {
+","[" "]+ {
   printf(",\n");
   return COMMA;
 }
 
 ";" {
-  printf(";\n\n");
+  printf(";\n");
   return SEMICOLON;
 }
 
@@ -469,6 +478,7 @@ PREPROC "#"
   printf("}\n");
   return CLOSECURLY;
 }
+
 
 {ID} {
     /**************************************
@@ -495,10 +505,7 @@ PREPROC "#"
   return CHARVAL;
 }
 
-{PREPROC} {
-  printf("PREPROC\n");
-  return PREPROC;
-}
+
 
 {DBLVAL} {
   printf("DBLVAL\n");
@@ -508,10 +515,6 @@ PREPROC "#"
 {FLTVAL} {
   printf("FLTVAL\n");
   return FLTVAL;
-}
-
-[\t]* {
-  return SPACE;
 }
 
 %%
