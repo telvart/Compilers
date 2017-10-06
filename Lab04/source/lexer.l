@@ -91,7 +91,7 @@
 %}
 
 %option noyywrap nounput yylineno
-%x COMMENT PREPRO
+%x COMMENT MULTILINE PREPRO
 
 ID [a-zA-Z][a-zA-Z0-9_]*
 STRVAL \"(\\.|[^"])*\"
@@ -102,6 +102,21 @@ FLTVAL [0-9]+"."[0-9]+f
 PREPROC "#"
 
 %%
+"/*" {
+  BEGIN MULTILINE;
+}
+
+<MULTILINE>"*/" {
+  BEGIN 0;
+}
+<MULTILINE>. {
+
+}
+
+<MULTILINE>[ \t\n](\r)? {
+
+}
+
 "//" {
     /****************************************
     * Matching with Single line comments in our
@@ -308,7 +323,7 @@ PREPROC "#"
 }
 
 "<=" {
-  printf("LE");
+  printf("LE\n");
   return LE;
 }
 
