@@ -1,7 +1,7 @@
 Initial State: {1}
-Final States: {11,2,3,4,5}
+Final States: {11}
 Total States: 11
-State	a	b	E
+State	a	b E
 1	{}	{}	{2,5}
 2	{3}	{}	{}
 3	{}	{4}	{}

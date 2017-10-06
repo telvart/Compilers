@@ -1,75 +1,70 @@
 
 #include <iostream>
 #include <string>
-#include <sstream>
 #include <algorithm>
+#include <vector>
 #include "State.h"
 
-
-int* parseFinalStates(std::string fStates, int& numFinalStates)
+int* parseFinalStates(std::string fStates, int& numNfaFinalStates)
 {
   fStates.erase(fStates.begin());
-  std::cout<<fStates<<"\n";
-  int i, pos;
+  int i = 0, pos;
   int* finalStates = new int[std::count(fStates.begin(), fStates.end(), ',') + 1];
-  //std::cout<<std::count(fStates.begin(), fStates.end(), ',') + 1<<"\n";
   std::string temp;
 
-  //while((fStates.find(",") != std::string::npos))
-  //{
+  while((fStates.find(",") != std::string::npos))
+  {
     pos = fStates.find(",");
     temp = fStates.substr(0, pos);
-
-    std::cout<<"f";
-    std::cout<<temp;
-    std::cout<<"g\n";
-    int temp2;
-    std::cout<<stoi(temp) << "\n";
-
-
-    //std::stringstream ss(temp);
-    //ss.clear();
-    //ss >> temp2;
-    //std::cout<<temp2<<"\n";
-
     fStates.erase(0, pos+1);
-    //finalStates[i] = atoi(temp.c_str());
-    //i++;
-
-
-  //}
-
+    finalStates[i] = stoi(temp);
+    i++;
+  }
   fStates[fStates.find("}")] = 0;
-  //std::cout<<stoi(fStates)<<"\n";
 
+  finalStates[i] = stoi(fStates);
 
-
-
-
-
-
-
-
-
+  numNfaFinalStates = i + 1;
   return finalStates;
 }
 
 int main(int argc, char** argv)
 {
 
-  int nfaInitialState;
-  int* nfaFinalStates;
-  int numStates;
-  int numFinalStates;
+  int nfaInitialState, numNfaStates, numNfaFinalStates, aSize=0, *nfaFinalStates;
+
   std::string dummy;
 
   std::cin>>dummy>>dummy>>dummy;
-//  std::cout<<dummy<<"\n";
-  nfaInitialState = (int)dummy[1] - 48;
+  dummy.erase(dummy.begin());
+  dummy[dummy.find("}")] = 0;
+
+  nfaInitialState = stoi(dummy);
   std::cout<<"NFA Initial: "<<nfaInitialState<<"\n";
 
   std::cin>>dummy>>dummy>>dummy;
-  nfaFinalStates = parseFinalStates(dummy, numFinalStates);
+  nfaFinalStates = parseFinalStates(dummy, numNfaFinalStates);
+
+  std::cout<<"NFA Final State(s): ";
+  for(int i=0; i<numNfaFinalStates; i++)
+    std::cout<<nfaFinalStates[i]<<" ";
+
+  std::cout<<"\n";
+  std::cin>>dummy>>dummy>>dummy;
+
+  numNfaStates = stoi(dummy);
+  std::cout<<"NFA # States: "<<numNfaStates<<"\n";
+
+  std::cin>>dummy;
+
+  std::cout<<"Input Alphabet: ";
+  while(dummy != "E")
+  {
+    std::cin>>dummy;
+    std::cout<<dummy<<" ";
+    aSize++;
+  }
+  std::cout<<"\n"<<"Alphabet Size: "<<aSize<<"\n";
 
 
 
