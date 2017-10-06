@@ -109,6 +109,7 @@ PREPROC "#"
 <MULTILINE>"*/" {
   BEGIN 0;
 }
+
 <MULTILINE>. {
 
 }
