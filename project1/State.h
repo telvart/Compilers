@@ -3,13 +3,22 @@
 #ifndef STATE_H
 #define STATE_H
 
+#include <vector>
+
 class State{
 
 public:
-  State();
+  State(std::vector<std::vector<int>> transitions, int stateNum,
+        std::vector<char> a);
   ~State();
-private:
 
+
+//private:
+  int myStateNum;
+  std::vector<std::vector<int>> myTransitions;
+
+  int alphabetSize;
+  std::vector<char> inputCharacters;
 };
 
 #endif

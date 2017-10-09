@@ -1,70 +1,107 @@
 
 #include <iostream>
 #include <string>
-#include <algorithm>
-#include <vector>
 #include "State.h"
+#include "ConvertHelper.h"
 
-int* parseFinalStates(std::string fStates, int& numNfaFinalStates)
-{
-  fStates.erase(fStates.begin());
-  int i = 0, pos;
-  int* finalStates = new int[std::count(fStates.begin(), fStates.end(), ',') + 1];
-  std::string temp;
-
-  while((fStates.find(",") != std::string::npos))
-  {
-    pos = fStates.find(",");
-    temp = fStates.substr(0, pos);
-    fStates.erase(0, pos+1);
-    finalStates[i] = stoi(temp);
-    i++;
-  }
-  fStates[fStates.find("}")] = 0;
-
-  finalStates[i] = stoi(fStates);
-
-  numNfaFinalStates = i + 1;
-  return finalStates;
-}
+int nfaInitialState, numNfaStates, numNfaFinalStates, aSize=0, *nfaFinalStates;
+std::vector<char> alphabet;
+std::vector<State> NFA;
+std::string dummy;
 
 int main(int argc, char** argv)
 {
-
-  int nfaInitialState, numNfaStates, numNfaFinalStates, aSize=0, *nfaFinalStates;
-
-  std::string dummy;
 
   std::cin>>dummy>>dummy>>dummy;
   dummy.erase(dummy.begin());
   dummy[dummy.find("}")] = 0;
 
   nfaInitialState = stoi(dummy);
-  std::cout<<"NFA Initial: "<<nfaInitialState<<"\n";
 
   std::cin>>dummy>>dummy>>dummy;
-  nfaFinalStates = parseFinalStates(dummy, numNfaFinalStates);
+  nfaFinalStates = ConvertHelper::parseFinalStates(dummy, numNfaFinalStates);
 
-  std::cout<<"NFA Final State(s): ";
-  for(int i=0; i<numNfaFinalStates; i++)
-    std::cout<<nfaFinalStates[i]<<" ";
-
-  std::cout<<"\n";
   std::cin>>dummy>>dummy>>dummy;
 
   numNfaStates = stoi(dummy);
-  std::cout<<"NFA # States: "<<numNfaStates<<"\n";
 
   std::cin>>dummy;
 
-  std::cout<<"Input Alphabet: ";
   while(dummy != "E")
   {
     std::cin>>dummy;
-    std::cout<<dummy<<" ";
+    alphabet.push_back(dummy[0]);
     aSize++;
   }
-  std::cout<<"\n"<<"Alphabet Size: "<<aSize<<"\n";
+
+  for(int i=0; i< numNfaStates; i++)
+  {
+    std::cin>>dummy;
+    std::vector<std::vector<int>> transitions;
+    for(int j =0; j<aSize; j++)
+    {
+      std::cin>>dummy;
+      transitions.push_back(ConvertHelper::parseStateSet(dummy));
+    }
+    NFA.push_back(State(transitions, i+1, alphabet));
+  }
+
+  ConvertHelper help =
+  ConvertHelper(NFA, alphabet, nfaFinalStates, numNfaFinalStates, aSize, numNfaStates, nfaInitialState);
+
+  std::vector<int> initial;
+  initial.push_back(4);
+  std::vector<int> test;
+  test = help.Eclosure(initial);
+
+  std::cout<<"E closure {4} = ";
+  for(int j=0; j<test.size(); j++)
+  {
+    std::cout<<test[j]<<" ";
+  }
+  std::cout<<"\n";
+
+  //help.toDFA();
+
+
+
+//
+// std::cout<<"NFA Initial: "<<nfaInitialState<<"\n";
+//
+// std::cout<<"NFA Final State(s): ";
+// for(int i=0; i<numNfaFinalStates; i++)
+//   std::cout<<nfaFinalStates[i]<<" ";
+//
+// std::cout<<"\n";
+// std::cout<<"NFA # States: "<<numNfaStates<<"\n";
+//
+// std::cout<<"Input Alphabet: ";
+//
+//
+// for(int i=0; i<aSize; i++)
+// {
+//   std::cout<<NFA[0].inputCharacters[i]<<" ";
+// }
+//
+// std::cout<<"\n"<<"Alphabet Size: "<<aSize<<"\n";
+//
+// for(int i=0; i<numNfaStates; i++)
+// {
+//   State currentState = NFA[i];
+//   std::cout<<"State: "<<currentState.myStateNum<<" ";
+//   for(int j=0; j<aSize; j++)
+//   {
+//       std::cout<<"{";
+//       for(int k = 0; k < currentState.myTransitions[j].size(); k++)
+//       {
+//         std::cout<<currentState.myTransitions[j][k]<<" ";
+//       }
+//       std::cout<<"} ";
+//   }
+//   std::cout<<"\n";
+// }
+
+
 
 
 

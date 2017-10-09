@@ -2,12 +2,18 @@
 
 
 
-State::State()
+State::State(std::vector<std::vector<int>> transitions, int stateNum,
+             std::vector<char> a)
 {
-
+  myTransitions = transitions;
+  myStateNum = stateNum;
+  inputCharacters = a;
 }
 
 State::~State()
 {
-  
+  //if(myTransitions != nullptr)
+//  {
+    //delete[] myTransitions;
+  //}
 }
