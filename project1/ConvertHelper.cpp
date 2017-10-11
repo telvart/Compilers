@@ -16,10 +16,10 @@ ConvertHelper::ConvertHelper(std::vector<State> NFA, std::vector<char> inputChar
 
 ConvertHelper::~ConvertHelper()
 {
-
+  delete[] finalStates;
 }
 
-void ConvertHelper::toDFA()
+void ConvertHelper::NFAtoDFA()
 {
 
 }
@@ -30,39 +30,114 @@ std::vector<int> ConvertHelper::getEmoves(int statenum)
   return s.myTransitions[s.alphabetSize-1];
 }
 
-std::vector<int> ConvertHelper::Eclosure(std::vector<int> states)
+std::vector<int> ConvertHelper::Eclosure(int state)
 {
+  std::vector<int> closureSet;
+  bool added = true;
 
-  std::vector<int> returnVal;
-
-  for(int i=0; i<states.size(); i++) //foreach state
+  State currentState = NFA[state-1];
+  if(!vectorContains(closureSet, currentState.myStateNum)) //add the current state
   {
-    State currentState = NFA[states[i]-1];
-    if(!vectorContains(returnVal, currentState.myStateNum))
+    closureSet.push_back(currentState.myStateNum);
+  }
+  std::vector<int> moves = currentState.getEmoves();
+  //std::cout<<"E MOVES: ";
+  for(unsigned int j=0; j<moves.size(); j++)
+  {
+    if(!vectorContains(closureSet, moves[j])) // add the moves of the current state
     {
-      returnVal.push_back(currentState.myStateNum);
+      closureSet.push_back(moves[j]);
     }
-    std::vector<int> moves = currentState.myTransitions[currentState.myTransitions.size()-1];
-    //std::cout<<"E MOVES: ";
-    for(int j=0; j<moves.size(); j++)
+  }
+  while(added) // while ive added something to the return set
+  {
+    added = false;
+
+    std::vector<std::vector<int>> totalMoves;
+    for(unsigned int i=0; i < closureSet.size(); i++) // get the moves of all states currently added
     {
-      if(!vectorContains(returnVal, moves[j]))
+      totalMoves.push_back(NFA[closureSet[i] - 1].getEmoves());
+    }
+
+    for(unsigned int i=0; i <totalMoves.size(); i++)
+    {
+      for(unsigned int j=0; j<totalMoves[i].size(); j++) // for each of the moves of the states added
       {
-        returnVal.push_back(moves[j]);
+        if(!vectorContains(closureSet, totalMoves[i][j])) // add the move if the state is not added
+        {
+          closureSet.push_back(totalMoves[i][j]);
+          added = true; // a state was added, so the process must repeat
+        }
       }
     }
-
-
   }
 
-  return returnVal;
-
-
-
-
+  std::sort(closureSet.begin(), closureSet.end());
+  return closureSet;
 }
 
+std::vector<int> ConvertHelper::EclosureSet(std::vector<int> states)
+{
+  std::vector<int> closureSet; // = Eclosure(states[0]);
+  std::vector<int> temp;
 
+  for(unsigned int j=0; j<states.size(); j++)
+  {
+    std::cout<<"E closure of "<<states[j]<<": ";
+    temp = Eclosure(states[j]);
+    for(unsigned int i=0; i< temp.size(); i++)
+    {
+      std::cout<<temp[i]<<" ";
+    }
+    std::cout<<"\n";
+    closureSet = combine(closureSet, temp);
+  }
+
+  std::cout<<"Combined Closure: ";
+  for(unsigned int i=0; i<closureSet.size(); i++)
+  {
+    std::cout<<closureSet[i]<<" ";
+  }
+  std::cout<<"\n";
+
+  return closureSet;
+}
+
+std::vector<int> ConvertHelper::combine(std::vector<int> first, std::vector<int> second)
+{
+  std::vector<int> result;
+  while(!second.empty()||!first.empty())
+  {
+      if(first.empty())
+      {
+          result.insert(result.end(),second.begin(),second.end());
+          return result;
+      }
+      if(second.empty())
+      {
+          result.insert(result.end(),first.begin(),first.end());
+          return result;
+      }
+      if(first.front()==second.front())
+      {
+          result.push_back(first.front());
+          first.erase(first.begin());
+          second.erase(second.begin());
+      }
+      else if(first.front()<second.front())
+      {
+          result.push_back(first.front());
+          first.erase(first.begin());
+      }
+      else
+      {
+          result.push_back(second.front());
+          second.erase(second.begin());
+      }
+  }
+  return result;
+
+}
 
 bool ConvertHelper::vectorContains(std::vector<int> v, int x)
 {
@@ -72,8 +147,6 @@ bool ConvertHelper::vectorContains(std::vector<int> v, int x)
   }
   return false;
 }
-
-
 
 int* ConvertHelper::parseFinalStates(std::string fStates, int& numNfaFinalStates)
 {

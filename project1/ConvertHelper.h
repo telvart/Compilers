@@ -16,15 +16,17 @@ public:
 
   ~ConvertHelper();
 
-  void toDFA();
+  void NFAtoDFA();
   std::vector<int> getEmoves(int statenum);
 
 
   static int* parseFinalStates(std::string fStates, int& numNfaFinalStates);
   static std::vector<int> parseStateSet(std::string states);
 
-  std::vector<int> Eclosure(std::vector<int> states);
+  std::vector<int> Eclosure(int states);
+  std::vector<int> EclosureSet(std::vector<int> states);
 
+  std::vector<int> combine(std::vector<int> a1, std::vector<int> a2);
 
   bool vectorContains(std::vector<int> v, int x);
 

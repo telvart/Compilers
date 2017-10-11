@@ -17,3 +17,8 @@ State::~State()
     //delete[] myTransitions;
   //}
 }
+
+std::vector<int> State::getEmoves()
+{
+  return myTransitions[myTransitions.size() - 1];
+}

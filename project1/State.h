@@ -12,6 +12,8 @@ public:
         std::vector<char> a);
   ~State();
 
+  std::vector<int> getEmoves();
+
 
 //private:
   int myStateNum;

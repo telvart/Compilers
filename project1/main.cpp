@@ -49,21 +49,16 @@ int main(int argc, char** argv)
   ConvertHelper help =
   ConvertHelper(NFA, alphabet, nfaFinalStates, numNfaFinalStates, aSize, numNfaStates, nfaInitialState);
 
-  std::vector<int> initial;
-  initial.push_back(4);
-  std::vector<int> test;
-  test = help.Eclosure(initial);
 
-  std::cout<<"E closure {4} = ";
-  for(int j=0; j<test.size(); j++)
-  {
-    std::cout<<test[j]<<" ";
-  }
-  std::cout<<"\n";
+  std::cout<<"Epsilon Closure Set Test\n";
+  std::vector<int> test, test2;
+  test2.push_back(1);
+  test2.push_back(4);
+  test2.push_back(7);
 
-  //help.toDFA();
-
-
+  test = help.EclosureSet(test2);
+    
+  //help.NFAtoDFA();
 
 //
 // std::cout<<"NFA Initial: "<<nfaInitialState<<"\n";
