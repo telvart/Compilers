@@ -2,7 +2,7 @@
 #include "ConvertHelper.h"
 
 ConvertHelper::ConvertHelper(std::vector<State> NFA, std::vector<char> inputCharacters,
-  int* finalStates, int numFStates, int aSize, int numStates, int initial)
+  std::vector<int> finalStates, int numFStates, int aSize, int numStates, int initial)
 {
   this->NFA = NFA;
   this->inputCharacters = inputCharacters;
@@ -16,18 +16,31 @@ ConvertHelper::ConvertHelper(std::vector<State> NFA, std::vector<char> inputChar
 
 ConvertHelper::~ConvertHelper()
 {
-  delete[] finalStates;
+
 }
 
 void ConvertHelper::NFAtoDFA()
 {
 
+  std::vector<State> DStates;
+  int DStatesindex = 1;
+
+  std::cout<<"E-closure(IO) = ";
+  printVector(Eclosure(nfaInitial));
+  std::cout<<" = "<<DStatesindex<<"\n";
+
 }
 
-std::vector<int> ConvertHelper::getEmoves(int statenum)
+bool ConvertHelper::unmarkedState(std::vector<State> DStates)
 {
-  State s = NFA[statenum];
-  return s.myTransitions[s.alphabetSize-1];
+  for(unsigned int i =0; i<DStates.size(); i++)
+  {
+    if(DStates[i].DFAmark == false)
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 std::vector<int> ConvertHelper::Eclosure(int state)
@@ -83,22 +96,9 @@ std::vector<int> ConvertHelper::EclosureSet(std::vector<int> states)
 
   for(unsigned int j=0; j<states.size(); j++)
   {
-    std::cout<<"E closure of "<<states[j]<<": ";
     temp = Eclosure(states[j]);
-    for(unsigned int i=0; i< temp.size(); i++)
-    {
-      std::cout<<temp[i]<<" ";
-    }
-    std::cout<<"\n";
     closureSet = combine(closureSet, temp);
   }
-
-  std::cout<<"Combined Closure: ";
-  for(unsigned int i=0; i<closureSet.size(); i++)
-  {
-    std::cout<<closureSet[i]<<" ";
-  }
-  std::cout<<"\n";
 
   return closureSet;
 }
@@ -148,29 +148,6 @@ bool ConvertHelper::vectorContains(std::vector<int> v, int x)
   return false;
 }
 
-int* ConvertHelper::parseFinalStates(std::string fStates, int& numNfaFinalStates)
-{
-  fStates.erase(fStates.begin());
-  int i = 0, pos;
-  int* finalStates = new int[std::count(fStates.begin(), fStates.end(), ',') + 1];
-  std::string temp;
-
-  while((fStates.find(",") != std::string::npos))
-  {
-    pos = fStates.find(",");
-    temp = fStates.substr(0, pos);
-    fStates.erase(0, pos+1);
-    finalStates[i] = stoi(temp);
-    i++;
-  }
-  fStates[fStates.find("}")] = 0;
-
-  finalStates[i] = stoi(fStates);
-
-  numNfaFinalStates = i + 1;
-  return finalStates;
-}
-
 std::vector<int> ConvertHelper::parseStateSet(std::string states)
 {
   std::vector<int> transitions; //new int[std::count(states.begin(), states.end(), ',') + 1];
@@ -195,5 +172,39 @@ std::vector<int> ConvertHelper::parseStateSet(std::string states)
 
   return transitions;
 
-
 }
+
+void ConvertHelper::printVector(std::vector<int> v)
+  {
+    std::cout<<"{";
+    for(unsigned int i=0; i<v.size(); i++)
+    {
+      if(i != v.size()-1)
+      {
+        std::cout<<v[i]<<",";
+      }
+      else
+      {
+        std::cout<<v[i];
+      }
+    }
+    std::cout<<"}";
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //

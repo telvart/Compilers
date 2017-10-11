@@ -4,9 +4,10 @@
 #include "State.h"
 #include "ConvertHelper.h"
 
-int nfaInitialState, numNfaStates, numNfaFinalStates, aSize=0, *nfaFinalStates;
+int nfaInitialState, numNfaStates, numNfaFinalStates, aSize=0;// *nfaFinalStates;
 std::vector<char> alphabet;
-std::vector<State> NFA;
+std::vector<State> NFA, DFA;
+std::vector<int> nfaFinalStates;
 std::string dummy;
 
 int main(int argc, char** argv)
@@ -19,7 +20,8 @@ int main(int argc, char** argv)
   nfaInitialState = stoi(dummy);
 
   std::cin>>dummy>>dummy>>dummy;
-  nfaFinalStates = ConvertHelper::parseFinalStates(dummy, numNfaFinalStates);
+  nfaFinalStates = ConvertHelper::parseStateSet(dummy);
+  numNfaFinalStates = nfaFinalStates.size();
 
   std::cin>>dummy>>dummy>>dummy;
 
@@ -50,15 +52,22 @@ int main(int argc, char** argv)
   ConvertHelper(NFA, alphabet, nfaFinalStates, numNfaFinalStates, aSize, numNfaStates, nfaInitialState);
 
 
-  std::cout<<"Epsilon Closure Set Test\n";
-  std::vector<int> test, test2;
-  test2.push_back(1);
-  test2.push_back(4);
-  test2.push_back(7);
+  // std::cout<<"Epsilon Closure Set Test\n";
+  // std::vector<int> test, test2, test3;
+  // test2.push_back(1);
+  // test2.push_back(4);
+  // test2.push_back(7);
+  // test = help.EclosureSet(test2);
 
-  test = help.EclosureSet(test2);
-    
-  //help.NFAtoDFA();
+  // test3 = NFA[1].getCharMoves('a');
+  // std::cout<<"2 --a-> ";
+  // for(int i=0; i<test3.size(); i++)
+  // {
+  //   std::cout<<test3[i]<<" ";
+  // }
+  // std::cout<<"\n\n";
+
+  help.NFAtoDFA();
 
 //
 // std::cout<<"NFA Initial: "<<nfaInitialState<<"\n";

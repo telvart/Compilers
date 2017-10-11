@@ -4,6 +4,8 @@
 #define STATE_H
 
 #include <vector>
+#include <algorithm>
+#include <iostream>
 
 class State{
 
@@ -13,13 +15,17 @@ public:
   ~State();
 
   std::vector<int> getEmoves();
+  std::vector<int> getCharMoves(char c);
+
+  int indexOf(std::vector<char> v, char x);
 
 
 //private:
-  int myStateNum;
+  int myStateNum, alphabetSize;
+  bool DFAmark;
   std::vector<std::vector<int>> myTransitions;
 
-  int alphabetSize;
+
   std::vector<char> inputCharacters;
 };
 
