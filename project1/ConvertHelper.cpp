@@ -22,16 +22,76 @@ ConvertHelper::~ConvertHelper()
 void ConvertHelper::NFAtoDFA()
 {
 
-  std::vector<State> DStates;
-  int DStatesindex = 1;
+  std::vector<DFAState> DStates;
+  int index, DStatenum = 2;
 
-  std::cout<<"E-closure(IO) = ";
-  printVector(Eclosure(nfaInitial));
-  std::cout<<" = "<<DStatesindex<<"\n";
+  DFAState first = DFAState(1, Eclosure(nfaInitial));
+  DStates.push_back(first);
+
+  std::cout<<"\nE-closure(IO) = ";
+  printVector(first.myStates);
+  std::cout<<" = 1\n\n";
+
+  while(unmarkedState(DStates)) //while there is an unmarked state in Dstates
+  {
+    int index = getFirstUnmarked(DStates);
+    std::cout<<"Mark "<<DStates[index].myNum<<"\n";
+    DStates[index].DFAmark = true;
+    DFAState T = DStates[index];
+
+    for(int i=0; i<inputCharacters.size()-1; i++) // for each input character
+    {
+
+      std::vector<int> NFAmoves = charMovesSet(T.myStates, inputCharacters[i]);
+
+      if(!NFAmoves.empty())
+      {
+        printVector(T.myStates);
+        std::cout<<" --"<<inputCharacters[i]<<"--> ";
+        printVector(NFAmoves);
+        std::cout<<"\nE-closure";
+        printVector(NFAmoves);
+        std::vector<int> U = EclosureSet(NFAmoves);
+        std::cout<<" = ";
+        printVector(U);
+        std::cout<<" = "<<DStatenum<<"\n\n";
+
+
+        // std::cout<<"\n\nDoes DStates contain ";
+        // printVector(U);
+        // std::cout<<" ? : "<<DStatescontains(DStates, U)<<"\n\n";
+        if(!DStatescontains(DStates, U))
+        {
+          DFAState s = DFAState(DStatenum, U);
+          DStates.push_back(s);
+          DStatenum++;
+        }
+
+
+
+      }
+
+    }
+    std::cout<<"\n";
+
+  }
+
 
 }
 
-bool ConvertHelper::unmarkedState(std::vector<State> DStates)
+bool ConvertHelper::DStatescontains(std::vector<DFAState> D, std::vector<int> NFAstates)
+{
+  for(int i = 0; i<D.size(); i++)
+  {
+    if(D[i].myStates == NFAstates)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool ConvertHelper::unmarkedState(std::vector<DFAState> DStates)
 {
   for(unsigned int i =0; i<DStates.size(); i++)
   {
@@ -41,6 +101,17 @@ bool ConvertHelper::unmarkedState(std::vector<State> DStates)
     }
   }
   return false;
+}
+
+int ConvertHelper::getFirstUnmarked(std::vector<DFAState> DStates)
+{
+  for(unsigned int i = 0; i<DStates.size(); i++)
+  {
+    if(DStates[i].DFAmark == false)
+    {
+      return i;
+    }
+  }
 }
 
 std::vector<int> ConvertHelper::Eclosure(int state)
@@ -101,6 +172,23 @@ std::vector<int> ConvertHelper::EclosureSet(std::vector<int> states)
   }
 
   return closureSet;
+}
+
+
+std::vector<int> ConvertHelper::charMovesSet(std::vector<int> states, char a)
+{
+  std::vector<int> moveSet;
+  std::vector<int> temp;
+  for(unsigned int i =0; i<states.size(); i++)
+  {
+    State cur = NFA[states[i] - 1];
+    temp = cur.getCharMoves(a);
+    moveSet = combine(moveSet, temp);
+  }
+
+  return moveSet;
+
+
 }
 
 std::vector<int> ConvertHelper::combine(std::vector<int> first, std::vector<int> second)

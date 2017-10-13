@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include "State.h"
+#include "DFAState.h"
 
 class ConvertHelper{
 
@@ -25,11 +26,14 @@ public:
   std::vector<int> Eclosure(int states);
   std::vector<int> EclosureSet(std::vector<int> states);
   std::vector<int> combine(std::vector<int> a1, std::vector<int> a2);
+  std::vector<int> charMovesSet(std::vector<int> states, char a);
 
   void printVector(std::vector<int> v);
 
   bool vectorContains(std::vector<int> v, int x);
-  bool unmarkedState(std::vector<State> DStates);
+  bool DStatescontains(std::vector<DFAState> D,std::vector<int> NFAstates);
+  bool unmarkedState(std::vector<DFAState> DStates);
+  int getFirstUnmarked(std::vector<DFAState> DStates);
 
   std::vector<State> NFA;
   std::vector<char> inputCharacters;

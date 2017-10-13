@@ -22,7 +22,6 @@ public:
 
 //private:
   int myStateNum, alphabetSize;
-  bool DFAmark;
   std::vector<std::vector<int>> myTransitions;
 
 

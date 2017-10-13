@@ -53,7 +53,7 @@ int main(int argc, char** argv)
 
 
   // std::cout<<"Epsilon Closure Set Test\n";
-  // std::vector<int> test, test2, test3;
+
   // test2.push_back(1);
   // test2.push_back(4);
   // test2.push_back(7);
@@ -67,9 +67,9 @@ int main(int argc, char** argv)
   // }
   // std::cout<<"\n\n";
 
-  help.NFAtoDFA();
+help.NFAtoDFA();
 
-//
+
 // std::cout<<"NFA Initial: "<<nfaInitialState<<"\n";
 //
 // std::cout<<"NFA Final State(s): ";

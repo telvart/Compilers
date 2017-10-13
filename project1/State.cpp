@@ -8,7 +8,6 @@ State::State(std::vector<std::vector<int>> transitions, int stateNum,
   myTransitions = transitions;
   myStateNum = stateNum;
   inputCharacters = a;
-  DFAmark = false;
 }
 
 State::~State()
