@@ -66,17 +66,10 @@ void ConvertHelper::NFAtoDFA()
           DStates.push_back(s);
           DStatenum++;
         }
-
-
-
       }
-
     }
     std::cout<<"\n";
-
   }
-
-
 }
 
 bool ConvertHelper::DStatescontains(std::vector<DFAState> D, std::vector<int> NFAstates)
