@@ -5,7 +5,7 @@ main.o: main.cpp
 State.o: State.cpp
 	g++ -g -Wall -std=c++11 -c State.cpp
 ConvertHelper.o: ConvertHelper.cpp
-	g++ -g -Wall -std=c++11 -c ConvertHelper.cpp
+	g++ -g -std=c++11 -c ConvertHelper.cpp
 DFAState.o: DFAState.cpp
 	g++ -g -Wall -std=c++11 -c DFAState.cpp
 clean:

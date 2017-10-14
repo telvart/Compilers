@@ -3,7 +3,6 @@
 #define CONVERTHELPER_H
 
 #include <vector>
-#include <string>
 #include <algorithm>
 #include <iostream>
 #include "State.h"
@@ -27,13 +26,17 @@ public:
   std::vector<int> EclosureSet(std::vector<int> states);
   std::vector<int> combine(std::vector<int> a1, std::vector<int> a2);
   std::vector<int> charMovesSet(std::vector<int> states, char a);
+  std::vector<int> getDFAFinalStates(std::vector<DFAState> DFA, std::vector<int> NFAFinals);
 
   void printVector(std::vector<int> v);
+  void printDFAtable(std::vector<DFAState> DFA);
 
   bool vectorContains(std::vector<int> v, int x);
   bool DStatescontains(std::vector<DFAState> D,std::vector<int> NFAstates);
   bool unmarkedState(std::vector<DFAState> DStates);
   int getFirstUnmarked(std::vector<DFAState> DStates);
+  int getDFAnum(std::vector<DFAState> DStates,std::vector<int> NFAstates);
+  int DFAinitial(std::vector<DFAState> DFA);
 
   std::vector<State> NFA;
   std::vector<char> inputCharacters;
@@ -42,7 +45,6 @@ public:
   int alphabetSize;
   int numStates;
   int nfaInitial;
-
 
 };
 

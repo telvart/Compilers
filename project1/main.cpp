@@ -48,69 +48,10 @@ int main(int argc, char** argv)
     NFA.push_back(State(transitions, i+1, alphabet));
   }
 
-  ConvertHelper help =
+  ConvertHelper h =
   ConvertHelper(NFA, alphabet, nfaFinalStates, numNfaFinalStates, aSize, numNfaStates, nfaInitialState);
 
-
-  // std::cout<<"Epsilon Closure Set Test\n";
-
-  // test2.push_back(1);
-  // test2.push_back(4);
-  // test2.push_back(7);
-  // test = help.EclosureSet(test2);
-
-  // test3 = NFA[1].getCharMoves('a');
-  // std::cout<<"2 --a-> ";
-  // for(int i=0; i<test3.size(); i++)
-  // {
-  //   std::cout<<test3[i]<<" ";
-  // }
-  // std::cout<<"\n\n";
-
-help.NFAtoDFA();
-
-
-// std::cout<<"NFA Initial: "<<nfaInitialState<<"\n";
-//
-// std::cout<<"NFA Final State(s): ";
-// for(int i=0; i<numNfaFinalStates; i++)
-//   std::cout<<nfaFinalStates[i]<<" ";
-//
-// std::cout<<"\n";
-// std::cout<<"NFA # States: "<<numNfaStates<<"\n";
-//
-// std::cout<<"Input Alphabet: ";
-//
-//
-// for(int i=0; i<aSize; i++)
-// {
-//   std::cout<<NFA[0].inputCharacters[i]<<" ";
-// }
-//
-// std::cout<<"\n"<<"Alphabet Size: "<<aSize<<"\n";
-//
-// for(int i=0; i<numNfaStates; i++)
-// {
-//   State currentState = NFA[i];
-//   std::cout<<"State: "<<currentState.myStateNum<<" ";
-//   for(int j=0; j<aSize; j++)
-//   {
-//       std::cout<<"{";
-//       for(int k = 0; k < currentState.myTransitions[j].size(); k++)
-//       {
-//         std::cout<<currentState.myTransitions[j][k]<<" ";
-//       }
-//       std::cout<<"} ";
-//   }
-//   std::cout<<"\n";
-// }
-
-
-
-
-
-
-
+  h.NFAtoDFA();
 
   return 0;
 }
