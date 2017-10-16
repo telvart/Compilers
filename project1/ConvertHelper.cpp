@@ -1,3 +1,10 @@
+/*
+  @file: ConvertHelper.cpp
+  @author: Tim Elvart
+  @date: 16 October 2017
+  @brief:
+  EECS 665 Assignment 1: Implementation of functions declared in ConvertHelper.h
+*/
 
 #include "ConvertHelper.h"
 
@@ -25,6 +32,7 @@ void ConvertHelper::NFAtoDFA()
   std::vector<DFAState> DStates;
   int index = 0, DStatenum = 2;
 
+  //initially, Eclosure(initialNFAState) is the only state in D States
   DStates.push_back(DFAState(1, Eclosure(nfaInitial), inputCharacters));
 
   std::cout<<"\nE-closure(IO) = ";
@@ -53,7 +61,7 @@ void ConvertHelper::NFAtoDFA()
         std::cout<<" = ";
         printVector(U);
 
-        if(!DStatescontains(DStates, U))
+        if(!DStatescontains(DStates, U)) // if DStates does not contain U add it to DStates
         {
           DFAState s = DFAState(DStatenum, U, inputCharacters);
           DStates.push_back(s);
