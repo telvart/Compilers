@@ -1,0 +1,89 @@
+$> make stdin_example
+./inputexamples "-c" < TestInput.txt
+Using std::cin
+grabbed "Primary Header" as content
+Parsed tags + contents:
+Starting tag: "<h1>"
+Contents    : "Primary Header"
+Ending tag  : "</h1>"
+grabbed "This is some " as content
+grabbed "large introductory" as content
+        Parsed nested tags + contents:
+        Starting tag: "<big>"
+        Contents    : "large introductory"
+        Ending tag  : "</big>"
+Parsed tags + contents:
+Starting tag: "<p>"
+Contents    : " text."
+Ending tag  : "</p>"
+grabbed "This is some " as content
+grabbed "small introductory" as content
+        Parsed nested tags + contents:
+        Starting tag: "<small>"
+        Contents    : "small introductory"
+        Ending tag  : "</small>"
+Parsed tags + contents:
+Starting tag: "<p>"
+Contents    : " text."
+Ending tag  : "</p>"
+grabbed "This is some " as content
+grabbed "bold introductory" as content
+        Parsed nested tags + contents:
+        Starting tag: "<b>"
+        Contents    : "bold introductory"
+        Ending tag  : "</b>"
+Parsed tags + contents:
+Starting tag: "<p>"
+Contents    : " text."
+Ending tag  : "</p>"
+grabbed "This is some " as content
+grabbed "italics introductory" as content
+        Parsed nested tags + contents:
+        Starting tag: "<i>"
+        Contents    : "italics introductory"
+        Ending tag  : "</i>"
+Parsed tags + contents:
+Starting tag: "<p>"
+Contents    : " text."
+Ending tag  : "</p>"
+grabbed "This is some " as content
+grabbed "emphasized introductory" as content
+        Parsed nested tags + contents:
+        Starting tag: "<em>"
+        Contents    : "emphasized introductory"
+        Ending tag  : "</em>"
+Parsed tags + contents:
+Starting tag: "<p>"
+Contents    : " text."
+Ending tag  : "</p>"
+grabbed "This is some " as content
+grabbed "strong introductory" as content
+        Parsed nested tags + contents:
+        Starting tag: "<strong>"
+        Contents    : "strong introductory"
+        Ending tag  : "</strong>"
+Parsed tags + contents:
+Starting tag: "<p>"
+Contents    : " text."
+Ending tag  : "</p>"
+grabbed "This is the 7" as content
+grabbed "th" as content
+        Parsed nested tags + contents:
+        Starting tag: "<sup>"
+        Contents    : "th"
+        Ending tag  : "</sup>"
+Parsed tags + contents:
+Starting tag: "<p>"
+Contents    : " paragraph"
+Ending tag  : "</p>"
+grabbed "This is the 8" as content
+grabbed "th" as content
+        Parsed nested tags + contents:
+        Starting tag: "<sub>"
+        Contents    : "th"
+        Ending tag  : "</sub>"
+Parsed tags + contents:
+Starting tag: "<p>"
+Contents    : " paragraph"
+Ending tag  : "</p>"
+e37;1mKurtSlagle@Unix$

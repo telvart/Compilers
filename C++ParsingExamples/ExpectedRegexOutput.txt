@@ -1,0 +1,23 @@
+$> make regex_example
+./inputexamples "-r"
+Using regular expressions
+Regex used:
+
+<[^>]+>(.*)<\/[^>]+>
+
+Trying to match against: "<p>This is some <big>large introductory</big> text.</p>
+Regex matched 2 items
+The matches are:
+        "<p>This is some <big>large introductory</big> text.</p>"
+Nested html tag matched 4 items
+The matches are:
+                "<p>This is some <big>large introductory</big> text.</p>"
+                ""
+                "This is some <big>large introductory</big> text."
+                ""
+        "This is some <big>large introductory</big> text."
+Nested html tag matched 4 items
+The matches are:
+                "This is some <big>large introductory</big> text."
+                "This is some "
+                "large introductory"

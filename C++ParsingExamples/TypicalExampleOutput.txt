@@ -1,0 +1,5 @@
+make[1]: Entering directory '/mnt/d/VS17Projects/EECS665_CPP_Parsing/Unix'
+./inputexamples "-t" < ReadUsingTypes.txt
+Using typical methods:
+IntRead: "15", StringRead: "SomeShortString", QuotedString: "Some long string in quotes"
+make[1]: Leaving directory '/mnt/d/VS17Projects/EECS665_CPP_Parsing/Unix'
