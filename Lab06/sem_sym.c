@@ -173,8 +173,8 @@ struct sem_rec *exprs(struct sem_rec *l, struct sem_rec *e)
  */
 void fhead(struct id_entry *p)
 {
-  fprintf(stderr, "sem: fhead not implemented\n");
-  exit(1);
+  //fprintf(stderr, "sem: fhead not implemented\n");
+  //exit(1);
 }
 
 /*
@@ -182,8 +182,9 @@ void fhead(struct id_entry *p)
  */
 void blockdcl()
 {
-  fprintf(stderr, "sem: blockdcl not implemented\n");
-  exit(1);
+  //fprintf(stderr, "sem: blockdcl not implemented\n");
+  //exit(1);
+  enterblock();
 }
 
 /*
@@ -191,8 +192,9 @@ void blockdcl()
  */
 void btail()
 {
-  fprintf(stderr, "sem: btail not implemented\n");
-  exit(1);
+  //fprintf(stderr, "sem: btail not implemented\n");
+  //exit(1);
+  leaveblock();
 }
 
 /*
@@ -200,8 +202,10 @@ void btail()
  */
 struct id_entry *fname(int t, char *id)
 {
-  fprintf(stderr, "sem: fname not implemented\n");
-  exit(1);
+  //fprintf(stderr, "sem: fname not implemented\n");
+  //exit(1);
+  enterblock();
+  //return NULL;
 }
 
 /*
@@ -209,8 +213,10 @@ struct id_entry *fname(int t, char *id)
  */
 void ftail()
 {
-  fprintf(stderr, "sem: ftail not implemented\n");
-  exit(1);
+  //fprintf(stderr, "sem: ftail not implemented\n");
+  //exit(1);
+  leaveblock();
+  leaveblock();
 }
 
 /*

@@ -32,7 +32,26 @@ struct id_entry *id_table[ITABSIZE] = {0}; /* identifier hash table */
  */
 void dump(int blev, FILE *f)
 {
-   fprintf( f, "You must write the function 'dump' yourself\n" );
+ fprintf(f, "Dumping identifier table...\n");
+  for(int i = 0; i < ITABSIZE; i++)
+  {
+    if(id_table[i] != NULL)
+    {
+      struct id_entry* temp_id = id_table[i];
+
+      while(temp_id != NULL)
+      {
+        if(temp_id -> i_blevel == blev)
+        {
+          fprintf(f, "%s\t", temp_id -> i_name);
+          fprintf(f, "%i\t", temp_id -> i_blevel);
+          fprintf(f, "%i\t", temp_id -> i_type);
+          fprintf(f, "%i\n", temp_id -> i_defined);
+        }
+        temp_id = temp_id -> i_link;
+      }
+    }
+  }
 }
 
 /*
@@ -61,8 +80,8 @@ void exit_block()
  */
 void enterblock()
 {
-   fprintf( stderr, "You must write the function 'enterblock' yourself\n" );
-   exit( 1 );
+   level++;
+   new_block();
 }
 
 /*
@@ -96,8 +115,29 @@ struct id_entry *install(char *name, int blev)
  */
 void leaveblock()
 {
-   fprintf( stderr, "You must write the function 'leaveblock' yourself\n" );
-   exit( 1 );
+   dump(level, stdout);
+
+   for(int i = 0; i < ITABSIZE; i++)
+   {
+     if(id_table[i] != NULL)
+     {
+       struct id_entry* temp_id = id_table[i];
+
+       while(temp_id != NULL)
+       {
+         if(temp_id -> i_blevel == level)
+         {
+           id_table[i] = temp_id -> i_link;
+           free(temp_id);
+         }
+
+         temp_id = temp_id -> i_link;
+       }
+     }
+   }
+
+   level--;
+   exit_block();
 }
 
 /*
