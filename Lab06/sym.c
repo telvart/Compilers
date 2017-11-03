@@ -37,18 +37,18 @@ void dump(int blev, FILE *f)
   {
     if(id_table[i] != NULL)
     {
-      struct id_entry* temp_id = id_table[i];
+      struct id_entry* temp = id_table[i];
 
-      while(temp_id != NULL)
+      while(temp != NULL)
       {
-        if(temp_id -> i_blevel == blev)
+        if(temp -> i_blevel == blev)
         {
-          fprintf(f, "%s\t", temp_id -> i_name);
-          fprintf(f, "%i\t", temp_id -> i_blevel);
-          fprintf(f, "%i\t", temp_id -> i_type);
-          fprintf(f, "%i\n", temp_id -> i_defined);
+          fprintf(f, "%s\t", temp->i_name);
+          fprintf(f, "%i\t", temp->i_blevel);
+          fprintf(f, "%i\t", temp->i_type);
+          fprintf(f, "%i\n", temp->i_defined);
         }
-        temp_id = temp_id -> i_link;
+        temp = temp -> i_link;
       }
     }
   }
