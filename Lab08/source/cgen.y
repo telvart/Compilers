@@ -159,28 +159,24 @@ unop    : ISUB ID       { }
         | IINV ID       { }
         | IDEREF ID     { }
         | IARG ID       {
-                          printf("    pushl      ");
+                          printf("pushl ");
                           function_printtemp(function, $2);
                           printf("\n");
-
                         }
+
         | ICALL ID INT  {
-                          printf( "    call       " );
+                          printf("call ");
                           function_labeltemp(function, $2);
                           printf("\n");
 
-                          int i;
-                          int num = $3;
-                          for(i = 0; i < num; i++){
-                            printf("    pop        %%ebp\n");
-                          }
+                          for(int i = 0; i < $3; i++)
+                            printf("pop %%ebp\n");
                         }
 
         | IRET ID       {
-                          printf( "    movl       " );
+                          printf("movl ");
                           function_printtemp(function,$2);
-                          printf( ", %%eax\n" );
-
+                          printf(", %%eax\n");
                         }
 
         | ICONV ID      { }
@@ -213,79 +209,79 @@ binop   : ID IEQ ID     { }
         | ID IOR ID     { }
         | ID IXOR ID    { }
 
-        | ID ISHL ID    { printf( "movl " );
+        | ID ISHL ID    { printf("movl ");
                           function_printtemp(function, $3);
-                          printf( ", %%eax\n" );
-                          printf( "movl " );
+                          printf(", %%eax\n");
+                          printf("movl ");
                           function_printtemp(function, $1);
                           printf(", %%ecx\n");
-                          printf( " sall %%cl, %%eax\n" );
+                          printf(" sall %%cl, %%eax\n");
 
                           }
 
-        | ID ISHR ID    { printf( "movl " );
+        | ID ISHR ID    { printf("movl ");
                           function_printtemp(function, $3);
-                          printf( ", %%eax\n" );
-                          printf( "movl " );
+                          printf(", %%eax\n");
+                          printf("movl ");
                           function_printtemp(function, $1);
                           printf(", %%ecx\n");
-                          printf( "sarl %%cl, %%eax\n" );
+                          printf("sarl %%cl, %%eax\n");
 
                           }
 
-        | ID IADD ID    { printf( "movl " );
+        | ID IADD ID    { printf("movl ");
                           function_printtemp(function, $3);
-                          printf( ", %%eax\n" );
-                          printf( "addl " );
+                          printf(", %%eax\n");
+                          printf("addl ");
                           function_printtemp(function, $1);
-                          printf( ", " );
-                          printf( "%%eax\n" );
+                          printf(", ");
+                          printf("%%eax\n");
 
                           }
 
-        | ID ISUB ID    { printf( "movl " );
+        | ID ISUB ID    { printf("movl ");
                           function_printtemp(function, $3);
-                          printf( ", %%eax\n" );
-                          printf( "subl " );
+                          printf(", %%eax\n");
+                          printf("subl ");
                           function_printtemp(function, $1);
-                          printf( ", " );
-                          printf( "%%eax\n\n" );
+                          printf(", ");
+                          printf("%%eax\n\n");
 
                           }
 
-        | ID IMUL ID    { printf( "movl " );
+        | ID IMUL ID    { printf("movl ");
                           function_printtemp(function, $3);
-                          printf( ", %%eax\n" );
-                          printf( "imul " );
+                          printf(", %%eax\n");
+                          printf("imul ");
                           function_printtemp(function, $1);
-                          printf( ", " );
-                          printf( "%%eax\n\n" );
+                          printf(", ");
+                          printf("%%eax\n\n");
 
                           }
 
-        | ID IDIV ID    { printf( "subl " );
-			                    printf( "%%edx, %%edx\n" );
-			                    printf( "movl " );
+        | ID IDIV ID    { printf("subl ");
+			                    printf("%%edx, %%edx\n");
+			                    printf("movl ");
                           function_printtemp(function, $3);
-                          printf( ", %%eax\n" );
-			                    printf( "movl " );
+                          printf(", %%eax\n");
+			                    printf("movl ");
                           function_printtemp(function, $1);
-                          printf( ", %%ebx\n" );
-                          printf( "idiv " );
-                          printf( "%%ebx\n\n" );
+                          printf(", %%ebx\n");
+                          printf("idiv ");
+                          printf("%%ebx\n\n");
 
                           }
 
-        | ID IMOD ID    { printf( "movl $0" );
-        									printf( ", %%edx\n" );
-        									printf( "movl " );
+        | ID IMOD ID    { printf("movl $0");
+        									printf(", %%edx\n");
+        									printf("movl ");
         									function_printtemp(function, $3);
-        									printf( ", %%eax\n" );
-        									printf( "idiv " );
+        									printf(", %%eax\n");
+        									printf("idiv ");
         									function_printtemp(function, $1);
-        									printf( ", %%eax\n" );
-        									printf( "movl " );
-        									printf( "%%edx, %%eax\n" );
+        									printf(", %%eax\n");
+        									printf("movl ");
+        									printf("%%edx, %%eax\n");
                           }
 
         | ID IIDX ID    { }
