@@ -176,7 +176,6 @@ unop    : ISUB ID       { }
                           }
                         }
 
-                          /* printf( " with %lld arguments\n", $3);  } */
         | IRET ID       {
                           printf( "    movl       " );
                           function_printtemp(function,$2);
@@ -213,87 +212,81 @@ binop   : ID IEQ ID     { }
         | ID IAND ID    { }
         | ID IOR ID     { }
         | ID IXOR ID    { }
-        | ID ISHL ID    { printf( "    movl       " );
+
+        | ID ISHL ID    { printf( "movl " );
                           function_printtemp(function, $3);
                           printf( ", %%eax\n" );
-                          printf( "    movl       " );
+                          printf( "movl " );
                           function_printtemp(function, $1);
                           printf(", %%ecx\n");
-                          printf( "    sall        %%cl, %%eax\n" );
+                          printf( " sall %%cl, %%eax\n" );
 
                           }
-        | ID ISHR ID    { printf( "    movl       " );
+
+        | ID ISHR ID    { printf( "movl " );
                           function_printtemp(function, $3);
                           printf( ", %%eax\n" );
-                          printf( "    movl       " );
+                          printf( "movl " );
                           function_printtemp(function, $1);
                           printf(", %%ecx\n");
-                          printf( "    sarl        %%cl, %%eax\n" );
+                          printf( "sarl %%cl, %%eax\n" );
 
                           }
-        | ID IADD ID    { printf( "    movl       " );
-                          function_printtemp(function,$3);
+
+        | ID IADD ID    { printf( "movl " );
+                          function_printtemp(function, $3);
                           printf( ", %%eax\n" );
-                          printf( "    addl       " );
-                          function_printtemp(function,$1);
+                          printf( "addl " );
+                          function_printtemp(function, $1);
                           printf( ", " );
                           printf( "%%eax\n" );
+
                           }
 
-
-
-        | ID ISUB ID    { printf( "    movl       " );
+        | ID ISUB ID    { printf( "movl " );
                           function_printtemp(function, $3);
                           printf( ", %%eax\n" );
-                          printf( "    subl       " );
+                          printf( "subl " );
                           function_printtemp(function, $1);
                           printf( ", " );
                           printf( "%%eax\n\n" );
 
                           }
 
-
-        | ID IMUL ID    { printf( "    movl       " );
+        | ID IMUL ID    { printf( "movl " );
                           function_printtemp(function, $3);
                           printf( ", %%eax\n" );
-                          printf( "    imul       " );
+                          printf( "imul " );
                           function_printtemp(function, $1);
                           printf( ", " );
                           printf( "%%eax\n\n" );
 
                           }
 
-
-        | ID IDIV ID    { printf( "    subl       " );
+        | ID IDIV ID    { printf( "subl " );
 			                    printf( "%%edx, %%edx\n" );
-			                    printf( "    movl       " );
-
+			                    printf( "movl " );
                           function_printtemp(function, $3);
-
                           printf( ", %%eax\n" );
-			                    printf( "    movl       " );
-
+			                    printf( "movl " );
                           function_printtemp(function, $1);
-
                           printf( ", %%ebx\n" );
-                          printf( "    idiv       " );
+                          printf( "idiv " );
                           printf( "%%ebx\n\n" );
 
                           }
 
-
-        | ID IMOD ID    { printf( "    movl       $0" );
+        | ID IMOD ID    { printf( "movl $0" );
         									printf( ", %%edx\n" );
-        									printf( "    movl       " );
+        									printf( "movl " );
         									function_printtemp(function, $3);
         									printf( ", %%eax\n" );
-        									printf( "    idiv       " );
+        									printf( "idiv " );
         									function_printtemp(function, $1);
         									printf( ", %%eax\n" );
-        									printf( "    movl       " );
+        									printf( "movl " );
         									printf( "%%edx, %%eax\n" );
                           }
-
 
         | ID IIDX ID    { }
         | ID FEQ ID     { }
