@@ -13,10 +13,9 @@ extern int localwidths[];
 int numlabels = 0;                      /* total labels in file */
 int numblabels = 0;                     /* toal backpatch labels in file */
 
-
-char typeAsChar(int T_TYPE)
+char typeAsChar(int s_mode)
 {
-  if(T_TYPE == T_INT)
+  if(s_mode == T_INT)
     return 'i';
   else
     return 'f';
@@ -32,8 +31,6 @@ int nextLabelbNum()
   return ++numblabels;
 }
 
-
-
 /*
  * backpatch - backpatch list of quadruples starting at p with k
  */
@@ -41,7 +38,6 @@ void backpatch(struct sem_rec *p, int k)
 {
    //fprintf(stderr, "sem: backpatch not implemented\n");
    printf("B%d=L%d\n", p->s_place, k);
-   //p->s_place = k+1;
 }
 
 /*
@@ -105,13 +101,13 @@ struct sem_rec *ccand(struct sem_rec *e1, int m, struct sem_rec *e2)
  */
 struct sem_rec *ccexpr(struct sem_rec *e)
 {
-   struct sem_rec *t1;
+   struct sem_rec *temp;
 
    if(e != NULL){
 
-     t1 = gen("!=", e, cast(con("0"), e->s_mode), e->s_mode);
+     temp = gen("!=", e, cast(con("0"), e->s_mode), e->s_mode);
 
-     printf("bt t%d B%d\n", t1->s_place, ++numblabels);
+     printf("bt t%d B%d\n", temp->s_place, ++numblabels);
      printf("br B%d\n", ++numblabels);
      return (node(0, 0,
 		  node(numblabels-1, 0, (struct sem_rec *) NULL,
@@ -141,8 +137,19 @@ struct sem_rec *ccnot(struct sem_rec *e)
  */
 struct sem_rec *ccor(struct sem_rec *e1, int m, struct sem_rec *e2)
 {
-   fprintf(stderr, "sem: ccor not implemented\n");
-   return ((struct sem_rec *) NULL);
+   //fprintf(stderr, "sem: ccor not implemented\n");
+
+   struct sem_rec* temp = gen("||", e1, e2, e1->s_mode);
+   printf("bt t%d B%d\n", temp->s_place, nextLabelbNum());
+   printf("br B%d\n", nextLabelbNum());
+
+   backpatch(e1->back.s_true, m);
+   temp->back.s_true = e2->back.s_true;
+   temp->s_false = merge(e1->s_false, e2->s_false);
+
+    //fprintf(stderr, "sem: ccand not implemented\n");
+    return node(0, 0, node(numblabels-1, 0, NULL, NULL), node(numblabels, 0, NULL, NULL));
+
 }
 
 /*
@@ -165,8 +172,7 @@ struct sem_rec *con(char *x)
   /* construct a new node corresponding to this constant generation
      into a temporary. This will allow this temporary to be referenced
      in an expression later*/
-  return(node(currtemp(), p->i_type, (struct sem_rec *) NULL,
-	      (struct sem_rec *) NULL));
+  return node(currtemp(), p->i_type, NULL, NULL);
 }
 
 /*
@@ -413,7 +419,7 @@ struct sem_rec *op1(char *op, struct sem_rec *y)
     return gen(op, 0, y, T_INT);
   }
 
-  return (gen(op, (struct sem_rec *) NULL, y, y->s_mode));
+  return (gen(op, NULL, y, y->s_mode));
 
 }
 
