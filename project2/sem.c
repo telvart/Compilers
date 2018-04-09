@@ -167,7 +167,7 @@ struct sem_rec *con(char *x)
   }
 
   /* print the quad t%d = const */
-  printf("t%d = %s\n", nexttemp(), x);
+  printf("t%d := %s\n", nexttemp(), x);
 
   /* construct a new node corresponding to this constant generation
      into a temporary. This will allow this temporary to be referenced
@@ -388,7 +388,7 @@ int m()
 {
    //fprintf(stderr, "sem: m not implemented\n");
    printf("label L%d\n", nextLabelNum());
-   return (numlabels);
+   return numlabels;
 }
 
 /*
@@ -506,15 +506,13 @@ struct sem_rec *set(char *op, struct sem_rec *x, struct sem_rec *y)
 
     /*cast y to a double*/
     printf("t%d = cvf t%d\n", nexttemp(), y->s_place);
-    cast_y = node(currtemp(), T_DOUBLE, (struct sem_rec *) NULL,
-		  (struct sem_rec *) NULL);
+    cast_y = node(currtemp(), T_DOUBLE, NULL, NULL);
   }
   else if((x->s_mode & T_INT) && !(y->s_mode & T_INT)){
 
     /*convert y to integer*/
     printf("t%d = cvi t%d\n", nexttemp(), y->s_place);
-    cast_y = node(currtemp(), T_INT, (struct sem_rec *) NULL,
-		  (struct sem_rec *) NULL);
+    cast_y = node(currtemp(), T_INT, NULL, NULL);
   }
 
   /*output quad for assignment*/
@@ -526,8 +524,7 @@ struct sem_rec *set(char *op, struct sem_rec *x, struct sem_rec *y)
 	   x->s_place, cast_y->s_place);
 
   /*create a new node to allow just created temporary to be referenced later */
-  return(node(currtemp(), (x->s_mode&~(T_ARRAY)),
-	      (struct sem_rec *)NULL, (struct sem_rec *)NULL));
+  return(node(currtemp(), (x->s_mode&~(T_ARRAY)), NULL, NULL));
 }
 
 /*
